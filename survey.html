@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>For Choime</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: radial-gradient(circle at 20% 20%, #ffe6f4 0, #ffdff1 35%, #fff 65%);
+    --rose: #ff5f9e;
+    --card: rgba(255,255,255,0.85);
+    --text: #2f2a2a;
+    --muted: #6b5e68;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; display: grid; place-items: center;
+    background: var(--bg); font-family: "Inter", system-ui, -apple-system, sans-serif;
+    color: var(--text); overflow: hidden; padding: 1rem;
+  }
+  .card {
+    width: min(92vw, 520px); padding: 3.5rem 3.5rem;
+    background: var(--card); backdrop-filter: blur(10px);
+    border-radius: 28px; box-shadow: 0 32px 90px rgba(0,0,0,0.14);
+    text-align: center; position: relative; overflow: hidden;
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  }
+  .card::after {
+    content: ""; position: absolute; inset: 12% 8%; z-index: -1;
+    background: radial-gradient(circle, rgba(255,95,158,0.08), transparent 55%);
+  }
+  .photo {
+    width: 150px; height: 150px; border-radius: 24px; object-fit: cover;
+    margin: 0 auto 1.6rem; box-shadow: 0 18px 40px rgba(255,95,158,0.35);
+    border: 4px solid #fff; display: block; background: #ffeef7;
+  }
+  h1 { margin: 0 0 .9rem; font-family: "Inter", system-ui, -apple-system, sans-serif; font-weight: 800; font-size: 1.8rem; color: #3a2f37; letter-spacing: -0.3px; line-height: 1.2; }
+  h2 { margin: 0 0 .9rem; font-family: "Playfair Display", serif; font-size: 2.2rem; letter-spacing: 0.3px; color: var(--rose); line-height: 1.2; }
+  p { margin: 0 0 1.8rem; font-size: 1.05rem; color: var(--muted); line-height: 1.5; }
+  .buttons { display: flex; gap: 1rem; justify-content: center; align-items: center; margin-top: .6rem; }
+  button {
+    border: none; border-radius: 999px; padding: 1rem 1.9rem; cursor: pointer;
+    font-size: 1rem; font-weight: 700; transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .yes { background: linear-gradient(135deg, #ff4f8c, #ff98c4); color: #fff; box-shadow: 0 16px 36px rgba(255,79,140,.35); }
+  .yes:hover { transform: translateY(-2px) scale(1.015); }
+  .no { background: #fff5fb; color: var(--rose); border: 2px solid #ffd6e9; padding-left: 1.4rem; padding-right: 1.4rem; }
+  .no:hover { transform: translateY(-2px); }
+  .overlay {
+    position: fixed; inset: 0; display: grid; place-items: center;
+    background: rgba(0,0,0,0.35); opacity: 0; pointer-events: none;
+    transition: opacity .28s ease; z-index: 10; padding: 1rem;
+  }
+  .overlay.show { opacity: 1; pointer-events: auto; }
+  .overlay-card {
+    background: #fff; border-radius: 24px; padding: 1.2rem; max-width: 420px; width: min(90vw, 420px);
+    box-shadow: 0 28px 70px rgba(0,0,0,0.2); text-align: center;
+  }
+  .overlay-card img {
+    width: 100%; border-radius: 16px; object-fit: cover; max-height: 380px;
+  }
+  .overlay-card h3 { margin: 0.8rem 0 0.3rem; font-size: 1.3rem; color: var(--rose); }
+  .overlay-card p { margin: 0 0 0.6rem; color: var(--muted); }
+  .audio-status { margin-top: 0.8rem; font-size: 0.9rem; color: var(--muted); }
+  .heart {
+    position: fixed; font-size: 16px; animation: float 7s linear forwards; opacity: 0.9; pointer-events: none;
+  }
+  @keyframes float {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-135vh) scale(1.35); opacity: 0; }
+  }
+
+  /* Mobile-friendly tweaks */
+  @media (max-width: 520px) {
+    .card { padding: 2.4rem 1.6rem; gap: 0.4rem; }
+    .photo { width: 130px; height: 130px; margin-bottom: 1.1rem; }
+    h1 { font-size: 1.5rem; margin-bottom: 0.7rem; }
+    h2 { font-size: 2rem; margin-bottom: 0.7rem; }
+    p { font-size: 1rem; margin-bottom: 1.4rem; }
+    .buttons { flex-direction: column; gap: 0.75rem; }
+    .yes, .no { width: 100%; max-width: 260px; }
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <img id="photo" class="photo" alt="Us">
+    <h1>hi lolove!</h1>
+    <h2>will you be my valentine?</h2>
+    <p>i know early pa kaayo mag ask basin man gud ma unhan ko hehe</p>
+    <div class="buttons">
+      <button class="yes" id="yesBtn">Yes 💖</button>
+      <button class="no" id="noBtn">No 🙈</button>
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay">
+    <div class="overlay-card">
+      <img id="revealImg" alt="Our moment">
+      <h3>yehey! 🥰</h3>
+      <p>glad you said yes hehe i love youuu</p>
+    </div>
+  </div>
+  <audio id="bgAudio" src="music.mp3" preload="auto"></audio>
+
+<script>
+const yes = document.getElementById('yesBtn');
+const no = document.getElementById('noBtn');
+const overlay = document.getElementById('overlay');
+const overlayImg = document.getElementById('revealImg');
+const photo = document.getElementById('photo');
+const audio = document.getElementById('bgAudio');
+
+// Main photo (already working)
+const photoUrl = "https://i.imgur.com/oFUBpHx.jpeg";
+
+// Surprise photo after Yes — replace with direct .jpg/.png from your album
+// Example: const revealImgUrl = "https://i.imgur.com/abc1234.jpg";
+const revealImgUrl = "https://i.imgur.com/2fJP5Kq.gif";
+
+if (photoUrl) photo.src = photoUrl;
+if (revealImgUrl) overlayImg.src = revealImgUrl;
+
+const words = ["💖","choime","i love youuu","💕","forever","💝","always","us","😘","💋","😍"];
+
+function spawnHeart(x, y) {
+  const heart = document.createElement('div');
+  heart.className = 'heart';
+  heart.textContent = words[Math.floor(Math.random() * words.length)];
+  heart.style.left = x + (Math.random()*80 - 40) + 'px';
+  heart.style.top  = y + 'px';
+  heart.style.fontSize = (14 + Math.random()*18) + 'px';
+  heart.style.color = Math.random() > 0.4 ? "#ff5f9e" : "#f2c14f";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 7000);
+}
+
+function burst(x, y) {
+  const burstEmojis = ["💖","💘","💝","💋","😘","😍","✨"];
+  for (let i = 0; i < 18; i++) {
+    setTimeout(() => {
+      const fx = x + (Math.random() * 180 - 90);
+      const fy = y + (Math.random() * 80 - 40);
+      const emoji = document.createElement('div');
+      emoji.className = 'heart';
+      emoji.textContent = burstEmojis[Math.floor(Math.random() * burstEmojis.length)];
+      emoji.style.left = fx + 'px';
+      emoji.style.top = fy + 'px';
+      emoji.style.fontSize = (18 + Math.random()*12) + 'px';
+      emoji.style.animationDuration = (4.5 + Math.random()*2) + 's';
+      emoji.style.color = Math.random() > 0.5 ? "#ff5f9e" : "#f2c14f";
+      document.body.appendChild(emoji);
+      setTimeout(() => emoji.remove(), 6500);
+    }, i * 50);
+  }
+}
+
+yes.addEventListener('click', async () => {
+  overlay.classList.add('show');
+  for (let i = 0; i < 28; i++) {
+    setTimeout(() => spawnHeart(window.innerWidth/2, window.innerHeight - 40), i * 70);
+  }
+  burst(window.innerWidth / 2, window.innerHeight / 2);
+  try {
+    audio.pause();
+    audio.currentTime = 0;
+    await audio.play();
+  } catch (e) {
+    // ignore if blocked; user can click Yes again
+  }
+});
+
+overlay.addEventListener('click', () => {
+  overlay.classList.remove('show');
+});
+
+no.addEventListener('mouseenter', () => {
+  const maxX = window.innerWidth - no.offsetWidth - 20;
+  const maxY = window.innerHeight - no.offsetHeight - 20;
+  const x = Math.random() * maxX;
+  const y = Math.random() * maxY;
+  no.style.position = 'fixed';
+  no.style.left = x + 'px';
+  no.style.top = y + 'px';
+});
+
+setInterval(() => {
+  const x = Math.random() * window.innerWidth;
+  const y = window.innerHeight - 10;
+  spawnHeart(x, y);
+}, 650);
+</script>
+</body>
+</html>
